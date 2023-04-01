@@ -10,3 +10,9 @@ def view_index(request):
         "navbar": "home"
     }
     return HttpResponse(template.render(context, request))
+def view_projects(request):
+    template = loader.get_template('projects.html')
+    context = {
+        "navbar": "projects"
+    }
+    return HttpResponse(template.render(context, request))
