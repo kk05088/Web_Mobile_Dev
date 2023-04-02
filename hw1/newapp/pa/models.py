@@ -1,15 +1,28 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
-
+from pa.enum_types import TaskStatus
 # from pa.enum_types import ProjectModel, VehicleStatus, UserType
 
 # Create your models here.
+
+class UserModel(models.Model):
+    user_id = models.AutoField(primary_key=True, db_column='id')
+    username = models.CharField(max_length=20, null=False, blank=False)
+    email = models.CharField(max_length=20, null=False, blank=False)
+    
+
+    class Meta:
+        db_table = "pa_user_model"
+
+    def __str__(self):
+        return f"{self.username}"
+
 class ProjectModel(models.Model):
-    model_id = models.AutoField(primary_key=True, db_column='id')
+    project_id = models.AutoField(primary_key=True, db_column='id')
     title = models.CharField(max_length=20, null=False, blank=False)
-    created_by = models.CharField(max_length=20, null=False, blank=False, default='Unknown')
-    created_at = models.CharField(max_length=20, null=False, blank=False, default='Unknown')
+    created_by = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='created_by')
+    created_at = models.DateTimeField(default=now, null=False, blank=False)
     # type = models.CharField(max_length=50, choices=[(t.name, t.value) for t in VehicleType],
     #                         help_text="Select the vehicle chassis type")
     # capacity = models.PositiveSmallIntegerField(null=False, default=2)
@@ -19,3 +32,10 @@ class ProjectModel(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+class TaskModel(models.Model):
+    title = models.CharField(max_length=20, null=False, blank=False)
+    assigned_to = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='assigned_to')
+    project = models.ForeignKey(ProjectModel, on_delete=models.CASCADE, related_name='project')
+    deadline = models.DateTimeField(null=False, blank=False)
+    status = models.CharField(max_length=50, choices=[(t.name, t.value) for t in TaskStatus])
