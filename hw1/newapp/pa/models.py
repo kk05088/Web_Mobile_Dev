@@ -23,6 +23,8 @@ class ProjectModel(models.Model):
     title = models.CharField(max_length=20, null=False, blank=False)
     created_by = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='created_by')
     created_at = models.DateTimeField(default=now, null=False, blank=False)
+    deadline = models.DateField(null=False, blank=False)
+ 
     # type = models.CharField(max_length=50, choices=[(t.name, t.value) for t in VehicleType],
     #                         help_text="Select the vehicle chassis type")
     # capacity = models.PositiveSmallIntegerField(null=False, default=2)
@@ -34,8 +36,14 @@ class ProjectModel(models.Model):
         return f"{self.title}"
 
 class TaskModel(models.Model):
-    title = models.CharField(max_length=20, null=False, blank=False)
-    assigned_to = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='assigned_to')
     project = models.ForeignKey(ProjectModel, on_delete=models.CASCADE, related_name='project')
+    assigned_to = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='assigned_to')
+    title = models.CharField(max_length=20, null=False, blank=False)
     deadline = models.DateTimeField(null=False, blank=False)
     status = models.CharField(max_length=50, choices=[(t.name, t.value) for t in TaskStatus])
+
+    class Meta:
+        db_table = "pa_task_model"
+
+    def __str__(self):
+        return(self.title)
