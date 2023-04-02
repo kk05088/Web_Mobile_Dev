@@ -1,0 +1,4 @@
+./hw1/venv
+.hw1/newapp/pa/__pycache__
+.hw1/newapp/thtry/__pycache__
+*.pyc
