@@ -8,6 +8,5 @@ export default function projectpage({todo, index}){
     return (
     <div>
         <ProjectPage/>
-
     </div>)
 }
