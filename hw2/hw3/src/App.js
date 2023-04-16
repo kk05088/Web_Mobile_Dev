@@ -4,12 +4,11 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 // import your components here
 import Home from './Components/home';
 import Admin from './Components/admin';
-import Login from './Components/login';
+
 function App() {
   return (
     <Router>
-
-      {/* <nav>
+      <nav>
         <ul>
           <li>
             <Link to="/home">Home</Link>
@@ -19,12 +18,12 @@ function App() {
           </li>
           
         </ul>
-      </nav> */}
+      </nav>
 
       <Routes>
-        <Route path="/" element={<Login/>}/>
-        <Route exact path="/Admin"  element={<Admin/>} />
-        <Route exact path="/home"  element={<Home/>} />
+        <Route path="/" />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/home" element={<Home />} />
         
       </Routes>
     </Router>
