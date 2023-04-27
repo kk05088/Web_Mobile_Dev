@@ -57,7 +57,7 @@ function Weather() {
             <Text>Feels Like : {data.feels_like}</Text>
             <Text>Temperature Min : {data.temp_min} °C</Text>
             <Text>Temperature Max : {data.temp_max} °C</Text>
-            <Text>Humidity : {data.humidity}</Text>
+            <Text>Humidity : {data.humidity}%</Text>
             <Text>Pressure : {data.pressure} pa</Text>
           </View>
         </View>
