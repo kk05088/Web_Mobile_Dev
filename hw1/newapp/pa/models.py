@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from pa.enum_types import TaskStatus
-# from pa.enum_types import ProjectModel, VehicleStatus, UserType
 
 # Create your models here.
 

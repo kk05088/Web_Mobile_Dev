@@ -53,7 +53,9 @@ def ProjectSaveView(request):
         title = request.POST.get('projectTitleText', None)
         project_leader = request.POST.get('leaderSelection', None)
         deadline = request.POST.get('deadlineDate', None)
-
+        print(title)
+        print(project_leader)
+        print(deadline)
         if not title or not project_leader or not deadline: 
             return HttpResponse('<h3 class="danger">Some parameters are empty.<h3>')
 
@@ -63,6 +65,37 @@ def ProjectSaveView(request):
 
         obj.save()
     return HttpResponseRedirect(view_projects)
+    
+    # if request.method == 'POST':  # check if the form was submitted
+    #     # retrieve the form data from the request
+    #     name = request.POST.get('name')
+    #     description = request.POST.get('description')
+    #     user_id = request.POST.get('user_id')
+
+    #     # create a new project instance with the form data
+    #     project = ProjectModel(name=name, description=description, user_id=user_id)
+    #     # save the new project instance to the database
+    #     project.save()
+
+    #     # redirect to a success page or somewhere else
+    #     return HttpResponseRedirect(view_projects)
+
+# @csrf_protect
+# def ProjectCreateView(request):
+#     if request.method == 'POST':  # check if the form was submitted
+#         # retrieve the form data from the request
+#         name = request.POST.get('name')
+#         description = request.POST.get('description')
+#         user_id = request.POST.get('user_id')
+
+#         # create a new project instance with the form data
+#         project = ProjectModel(name=name, description=description, user_id=user_id)
+#         # save the new project instance to the database
+#         project.save()
+
+#         # redirect to a success page or somewhere else
+#         return HttpResponseRedirect('/pa/projects')
+
 
 
 def TaskCreateView(request):
