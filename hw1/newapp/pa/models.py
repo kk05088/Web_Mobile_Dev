@@ -10,8 +10,6 @@ class UserModel(models.Model):
     user_id = models.AutoField(primary_key=True, db_column='id')
     username = models.CharField(max_length=20, null=False, blank=False)
     email = models.CharField(max_length=40, null=False, blank=False)
-    
-
     class Meta:
         db_table = "pa_user_model"
 
@@ -21,13 +19,9 @@ class UserModel(models.Model):
 class ProjectModel(models.Model):
     project_id = models.AutoField(primary_key=True, db_column='id')
     title = models.CharField(max_length=20, null=False, blank=False)
-    created_by = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='created_by')
+    created_by = models.ForeignKey(UserModel, null=False, on_delete=models.CASCADE, related_name='created_by')
     created_at = models.DateTimeField(default=now, null=False, blank=False)
     deadline = models.DateField(null=False, blank=False)
- 
-    # type = models.CharField(max_length=50, choices=[(t.name, t.value) for t in VehicleType],
-    #                         help_text="Select the vehicle chassis type")
-    # capacity = models.PositiveSmallIntegerField(null=False, default=2)
 
     class Meta:
         db_table = "pa_project_model"

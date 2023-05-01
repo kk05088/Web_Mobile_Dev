@@ -3,96 +3,59 @@
 
 {%include 'header.html'%}
 
-<div class="container animated fadeIn">
-        <div class="row justify-content-center">
-            <div class="col-8">
-                <div class="card-group">
-                    <div class="card p-4 mb-5">
-                        <div class="card-body">
-                            {% if created %}
-                              <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                  </button>
-                                  Congratulations, your project was created!
-                              </div>
-                            {% endif %}
-                                {% csrf_token %}
-                                <h1>Projects</h1>
-                                <p class="text-muted">Create your projects here</p>
 
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <div class="row p-2">
-                                    <div class="col-md-2">
-                                        <label class="form-label">Title</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="text" class="form-control" id="registrationNumberText" name="registrationNumberText" maxlength="8"
-                                               placeholder="E.g. AXE-788" required>
-                                    </div>
-                                </div>
-                        
-                                <div class="row p-2">
-                                    <div class="col-md-2">
-                                        <label class="form-label">Project Leader</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select form-select-lg mb-3" id = "colourSelection" name="colourSelection" required>
-                                            <option selected disabled value="">Choose...</option>
-                                            {% for c in colours %}
-                                            <option style="color:{{c}}" value="{{c}}">{{c}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-form-label">Dead Line</label>
-                                    <div class="input-group">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
-                                        </div>
-                                        {{ form.dead_line }}
-                                    </div>
+    <h1>Projects</h1>
+    <p class="text-muted">Create your projects here</p>
 
-                                    {% if form.dead_line.errors %}
-                                            <ol>
-                                            {% for error in form.dead_line.errors %}
-                                                <li><strong>{{ error|escape }}</strong></li>
-                                            {% endfor %}
-                                            </ol>
-                                        {% endif %}
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text"><i class="fa fa-percent"></i></span>
-                                        </div>
-                                        {{ form.complete_per }}
-                                    </div>
-
-                                    {% if form.complete_per.errors %}
-                                            <ol>
-                                            {% for error in form.complete_per.errors %}
-                                                <li><strong>{{ error|escape }}</strong></li>
-                                            {% endfor %}
-                                            </ol>
-                                        {% endif %}
-                                </div>
-
-                                <div class="">
-                                    <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
-                                    <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
-                                </div>
-                            </form>
-                            {{ form.errors }}
-                    </div>
+    <form action="{%url 'ProjectSaveView' %}" method="post" class="row g-3" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <div class="container">
+            <div class="row p-2">
+                <div class="col-md-2">
+                    <label class="form-label">Project Title</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="projectTitleText" name="projectTitleText" maxlength="80"
+                           placeholder="E.g. Flappy Bird in Python" required>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+    
+            <div class="row p-2">
+                <div class="col-md-2">
+                    <label class="form-label">Project Leader</label>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select form-select-lg mb-3" id = "leaderSelection"  required>
+                        <option selected disabled value="">Choose...</option>
+                        {% for u in users %}
+                        <option>{{u.username}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row p-2">
+                <div class="col-md-2">
+                    <label class="form-label">Deadline</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="datetime-local" class="form-control" id="deadlineDate" name="deadlineDate" required>
+                </div>
+            </div>
+
+            <div class="row p-2">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary" type="submit" id="saveButton">Save</button>
+                </div>
+            </div>
+    
+        </div> <!-- /container -->
+    
+    </form>
+    
+
 
 {% include 'footer.html' %}

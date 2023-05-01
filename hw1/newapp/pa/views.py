@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
+
+
 from pa.models import ProjectModel, UserModel, TaskModel
 from  pa.forms import *
 
@@ -33,34 +37,33 @@ def view_projects(request):
     }
     return HttpResponse(template.render(context, request))
 
-
+@csrf_protect
 def ProjectCreateView(request):
-
-
     template = loader.get_template('create_project.html')
-    models = ProjectModel.objects.all().values_list('project_id', 'title', 'created_by', 'created_at', 'deadline').order_by('type', 'vendor', 'model').values()
+    users = UserModel.objects.order_by('-username')
+    context = {
+        "navbar": "projects",
+        "users": users,
+    }
+    return HttpResponse(template.render(context, request))
 
-    if request.method == 'POST':
-        form = ProjectCreateForm(request.POST)
-        context = {'form': form}
-        if form.is_valid():
-            form.save()
-            created = True
-            form = ProjectCreateForm()
-            context = {
-                'created': created,
-                'form': form,
-            }
-            return HttpResponse(template.render(context, request))
-        else:
-            return HttpResponse(template.render(context, request))
-        
-    else:
-        form = ProjectCreateForm()
-        context = {
-            'form': form,
-        }
-        return HttpResponse(template.render(context, request))
+@csrf_protect
+def ProjectSaveView(request):
+    if request.method == 'POST':                
+        title = request.POST.get('projectTitleText', None)
+        project_leader = request.POST.get('leaderSelection', None)
+        deadline = request.POST.get('deadlineDate', None)
+
+        if not title or not project_leader or not deadline: 
+            return HttpResponse('<h3 class="danger">Some parameters are empty.<h3>')
+
+        created_by = UserModel.objects.filter(pk=project_leader).get()
+
+        obj = ProjectModel(title=title, created_by=created_by, deadline=deadline)
+
+        obj.save()
+    return HttpResponseRedirect(view_projects)
+
 
 def TaskCreateView(request):
 
