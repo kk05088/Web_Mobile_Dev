@@ -15,21 +15,21 @@ def view_index(request):
 
 def view_projects(request):
     template = loader.get_template('projects.html')
+    projects = ProjectModel.objects.order_by('-title')
+    all_projects = []
+    for project in projects:
+        obj ={
+            'project_id': project.project_id,
+            'title': project.title,
+            'created_by': project.created_by,
+            'created_at': project.created_at,
+            'deadline': project.deadline
+        }
+        
+        all_projects.append(obj)
     context = {
-        "navbar": "projects"
-    }
-    return HttpResponse(template.render(context, request))
-
-def ProjectListView(request):
-    template = loader.get_template('projects.html')
-
-    projects = ProjectModel.objects.all()
-    
-    tasks = TaskModel.objects.all()
-
-    context = {
-        'projects' : projects,
-        'tasks' : tasks,
+        "navbar": "projects",
+        "projects": all_projects
     }
     return HttpResponse(template.render(context, request))
 
@@ -37,8 +37,8 @@ def ProjectListView(request):
 def ProjectCreateView(request):
 
 
-    template = loader.get_template('new_projects.html')
-
+    template = loader.get_template('create_project.html')
+    models = ProjectModel.objects.all().values_list('project_id', 'title', 'created_by', 'created_at', 'deadline').order_by('type', 'vendor', 'model').values()
 
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
@@ -54,22 +54,13 @@ def ProjectCreateView(request):
             return HttpResponse(template.render(context, request))
         else:
             return HttpResponse(template.render(context, request))
+        
     else:
         form = ProjectCreateForm()
         context = {
             'form': form,
         }
         return HttpResponse(template.render(context, request))
-        # return render(request,'templates/new_project.html', context)
-      
-    
-
-    # template = loader.get_template('project_form.html')
-    # models = ProjectModel.objects.all()
-    # context = {
-    #     "navbar": "projects"
-    # }
-    # return HttpResponse(template.render(context, request))
 
 def TaskCreateView(request):
 

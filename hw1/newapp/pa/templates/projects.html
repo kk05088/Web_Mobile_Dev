@@ -20,9 +20,12 @@
                 <h2>Projects in Progress</h2>
                 <div class="text-center">
                 <p>Existing projects</p>
+                    {%for p in projects%}
                     <li>
-                        
+                        {{p.title}}
+                        (Due {{p.deadline}})
                     </li>
+                    {%endfor%}
                 </div>
                 
                 <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->

@@ -9,7 +9,7 @@ from pa.enum_types import TaskStatus
 class UserModel(models.Model):
     user_id = models.AutoField(primary_key=True, db_column='id')
     username = models.CharField(max_length=20, null=False, blank=False)
-    email = models.CharField(max_length=20, null=False, blank=False)
+    email = models.CharField(max_length=40, null=False, blank=False)
     
 
     class Meta:
