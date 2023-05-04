@@ -1,12 +1,19 @@
-from django.shortcuts import render
+import os.path
+import sqlite3
+from pathlib import Path
+
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 
+# import * from "../thtry"
+from pa.forms import *
+from pa.models import *
 
-from pa.models import ProjectModel, UserModel, TaskModel
-from  pa.forms import *
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# db_path = os.path.join(BASE_DIR, "PupilPremiumTable.db")
 
 # Create your views here.
 def view_index(request):
@@ -49,22 +56,45 @@ def ProjectCreateView(request):
 
 @csrf_protect
 def ProjectSaveView(request):
+    # conn = sqlite3.connect(BASE_DIR'/db.sqlite3')
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    conn = sqlite3.connect('C:/Karimdad/Spring 2023/webdev/Web_Mobile_Dev/hw1/newapp/db.sqlite3')
+    print(conn)
+    # create a cursor object to execute queries
+    cursor = conn.cursor()
+    
     if request.method == 'POST':                
         title = request.POST.get('projectTitleText', None)
         project_leader = request.POST.get('leaderSelection', None)
         deadline = request.POST.get('deadlineDate', None)
         print(title)
-        print(project_leader)
+        print("pls work",project_leader)
         print(deadline)
+        
+        
+
+        
         if not title or not project_leader or not deadline: 
             return HttpResponse('<h3 class="danger">Some parameters are empty.<h3>')
 
-        created_by = UserModel.objects.filter(pk=project_leader).get()
+        query = "SELECT id FROM 'pa_user_model' WHERE username = ?"
+        # query = "Select 1"
+        params = (project_leader,)
+        cursor.execute(query,params)
+        result = cursor.fetchone()
+        print(result)
+        # check if a user was found
+        if result:
+            user_id = result[0]  # get the user id
+        else:
+            print("No user with the chosen username was found")
+        
+        created_by = UserModel.objects.filter(pk=user_id).get()
 
         obj = ProjectModel(title=title, created_by=created_by, deadline=deadline)
-
         obj.save()
-    return HttpResponseRedirect(view_projects)
+        
+    return HttpResponseRedirect('/')
     
     # if request.method == 'POST':  # check if the form was submitted
     #     # retrieve the form data from the request

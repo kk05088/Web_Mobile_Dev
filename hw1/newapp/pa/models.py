@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
-from django.contrib.auth.models import User
+
 from pa.enum_types import TaskStatus
 
 # Create your models here.

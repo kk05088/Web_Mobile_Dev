@@ -26,7 +26,7 @@
                     <label class="form-label">Project Leader</label>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select form-select-lg mb-3" id = "leaderSelection"  required>
+                    <select class="form-select form-select-lg mb-3" id = "leaderSelection"  name = "leaderSelection"required>
                         <option selected disabled value="">Choose...</option>
                         {% for u in users %}
                         <option>{{u.username}}</option>
@@ -40,7 +40,7 @@
                     <label class="form-label">Deadline</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="datetime-local" class="form-control" id="deadlineDate" name="deadlineDate" required>
+                    <input type="date" class="form-control" id="deadlineDate" name="deadlineDate" required>
                 </div>
             </div>
 
