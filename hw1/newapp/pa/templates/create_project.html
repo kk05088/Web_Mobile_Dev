@@ -17,10 +17,8 @@
                     <label class="form-label">Project Title</label>
                 </div>
                 <div class="col-md-3">
-                    <option selected disabled value="">Choose...</option>
-                        {% for p in projects %}
-                        <option>{{p.titles}}</option>
-                        {% endfor %}
+                    <input type="text" class="form-control" id="projectTitleText" name="projectTitleText" maxlength="80"
+                           placeholder="E.g. Need for Speed in Unity" required>
                 </div>
             </div>
     
