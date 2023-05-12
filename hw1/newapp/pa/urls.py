@@ -4,6 +4,7 @@ from pa import views
 urlpatterns = [
     path('', views.view_index, name='home'),
     path('projects', views.view_projects, name='projects'),
+    path('projects/update', views.ProjectUpdateView, name="update_project"),
     path('projects/create', views.ProjectCreateView, name="create_project"),
     path('projects/create/save', views.ProjectSaveView, name="save_project"),
     # path('projects/list', views.ProjectListView, name="list_project"),

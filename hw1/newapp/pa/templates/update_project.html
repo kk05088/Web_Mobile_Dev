@@ -5,10 +5,10 @@
 
 
     <h1>Projects</h1>
-    <h2>Add a Project</h2>
+    <h2>Update a Project</h2>
     <p class="text-muted"></p>
 
-    <form action="/pa/projects/create/save" method="post" class="row g-3" enctype="multipart/form-data">
+    <form action="/pa/projects/update" method="post" class="row g-3" enctype="multipart/form-data">
         {% csrf_token %}
     
         <div class="container">
@@ -17,13 +17,15 @@
                     <label class="form-label">Project Title</label>
                 </div>
                 <div class="col-md-3">
-                    <option selected disabled value="">Choose...</option>
+                    <select class="form-select form-select-lg mb-3" id = "projectTitleText"  name = "projectTitleText"required>
+                        <option selected disabled value="">Choose...</option>
                         {% for p in projects %}
                         <option>{{p.titles}}</option>
                         {% endfor %}
+                    </select>
                 </div>
-            </div>
-    
+            </div> 
+
             <div class="row p-2">
                 <div class="col-md-2">
                     <label class="form-label">Project Leader</label>

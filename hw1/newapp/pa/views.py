@@ -55,10 +55,35 @@ def ProjectCreateView(request):
     return HttpResponse(template.render(context, request))
 
 @csrf_protect
+def ProjectUpdateView(request):
+    template = loader.get_template('update_project.html')
+    projects = ProjectModel.objects.order_by('-title')
+    all_projects = []
+    for project in projects:
+        obj ={
+            'project_id': project.project_id,
+            'title': project.title,
+            'created_by': project.created_by,
+            'created_at': project.created_at,
+            'deadline': project.deadline
+        }
+        
+        all_projects.append(obj)
+    
+    users = UserModel.objects.order_by('-username')
+    context = {
+        "navbar": "projects",
+        "projects": all_projects,
+        "users": users
+    }
+    return HttpResponse(template.render(context, request))
+
+@csrf_protect
 def ProjectSaveView(request):
-    # conn = sqlite3.connect(BASE_DIR'/db.sqlite3')
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    conn = sqlite3.connect('C:/Karimdad/Spring 2023/webdev/Web_Mobile_Dev/hw1/newapp/db.sqlite3')
+
+    # conn = sqlite3.connect('C:/Karimdad/Spring 2023/webdev/Web_Mobile_Dev/hw1/newapp/db.sqlite3')
+    
+    conn = sqlite3.connect("C:/Work/Karimdad/University/Semester 10/webdev/Web_Mobile_Dev/hw1/newapp/db.sqlite3")
     print(conn)
     # create a cursor object to execute queries
     cursor = conn.cursor()
@@ -67,16 +92,19 @@ def ProjectSaveView(request):
         title = request.POST.get('projectTitleText', None)
         project_leader = request.POST.get('leaderSelection', None)
         deadline = request.POST.get('deadlineDate', None)
-        print(title)
-        print("pls work",project_leader)
-        print(deadline)
-        
-        
 
-        
         if not title or not project_leader or not deadline: 
             return HttpResponse('<h3 class="danger">Some parameters are empty.<h3>')
 
+        #lines 76-83 dewtect repeated project entries
+        query = "SELECT id FROM pa_project_model WHERE title = ?"
+        params = (title,)
+        cursor.execute(query, params)
+        result = cursor.fetchone()
+        
+        if result:
+            return HttpResponse('<h3 class="danger">A project with the same title already exists.<h3>')
+        
         query = "SELECT id FROM 'pa_user_model' WHERE username = ?"
         # query = "Select 1"
         params = (project_leader,)

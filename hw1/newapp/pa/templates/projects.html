@@ -2,32 +2,34 @@
 {% include 'header.html' %}
 
 <main role="main">
-
+    <body>
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3">Projects</h1>
+            <h1 class="display-3" >Projects</h1>
             <p>
                 yes workin?
             </p>
-            <p><a class="btn btn-secondary btn-sm" href="/pa/projects/create" role="button">Create new &raquo;</a></p>
+            <p><a class="btn btn-secondary btn-sm" href="/pa/projects/create" role="button">Create &raquo;</a>
+                <a class="btn btn-secondary btn-sm" href="/pa/projects/update" role="button">Update &raquo;</a></p>
         </div>
     </div>
 
-    <div class="container">
+    <div class="project-list">
         <!-- Example row of columns -->
         <div class="row">
             <div class="col-md-4">
                 <h2>Projects in Progress</h2>
                 <div class="text-center">
-                <p>Existing projects</p>
+                <ul>
                     {%for p in projects%}
                     <li>
                         {{p.title}}
                         (Due {{p.deadline}})
                     </li>
                     {%endfor%}
+                </ul>
                 </div>
-                
+    </ul>
                 <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
             </div>
             
@@ -36,7 +38,34 @@
         <hr>
 
     </div> <!-- /container -->
-
+</body>
 </main>
 
+<style>
+.project-list {
+  list-style-type: decimal;
+  margin: 0;
+  padding: 0;
+}
+
+.project-list h2 {
+    margin-bottom: 30px;
+    margin-left: 38px;
+    margin-right: 20px;
+  }
+
+.project-list li {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+body {
+    min-height: 100vh;
+    padding-bottom: 60px; /* equal to the height of the footer */
+  }
+</style>
 {% include 'footer.html' %}
